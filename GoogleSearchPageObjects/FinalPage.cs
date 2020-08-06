@@ -1,13 +1,10 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using SeleniumExtras.PageObjects;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GoogleSearchPageObjects
 {
-    class FinalPage
+    public class FinalPage
     {
         private IWebDriver driver;
         Int32 timeout = 10000; // in milliseconds
@@ -15,11 +12,11 @@ namespace GoogleSearchPageObjects
         public FinalPage(IWebDriver driver)
         {
             this.driver = driver;
-            PageFactory.InitElements(driver, this);
         }
 
         public String getPageTitle()
         {
+            load_complete();
             return driver.Title;
         }
 

@@ -1,15 +1,6 @@
 using System;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Remote;
 using NUnit.Framework;
-using System.Threading;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using OpenQA.Selenium.Support.UI;
-// For supporting Page Object Model
-// Obsolete - using OpenQA.Selenium.Support.PageObjects;
-using SeleniumExtras.PageObjects;
-using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Chrome;
 
@@ -22,41 +13,36 @@ namespace GoogleSearchPageObjects
         {
             private IWebDriver driver;
             String search_string = "asdf";
+
+            public FinalPage FinalPage;
+            public HomePage HomePage;
+
+            public SearchPage SearchPage;
            // String web_page_title = "Google";
 
         [SetUp]
-            public void CreateDriver()
-            {
-                this.driver = new TWebDriver();
-            }
+        public void CreateDriver()
+        {
+            driver = new TWebDriver();
+            FinalPage = new FinalPage(driver);
+            SearchPage = new SearchPage(driver);
+            HomePage = new HomePage(driver);
+        }
 
         [Test, Parallelizable]
         public void SearchLT_Google()
         {
-            String expected_PageTitle = "asdf - Dictionary.com";
-            String result_PageTitle;
+            var expected_PageTitle = "asdf - Dictionary.com";
 
-            HomePage home_page = new HomePage(driver);
-            home_page.goToPage();
-            home_page.test_search(search_string);
+            HomePage.goToPage();
+            HomePage.test_search(search_string);
 
-            SearchPage search_page = new SearchPage(driver); ;
-            FinalPage final_page = search_page.click_search_results();
+            SearchPage.click_search_results();
 
             //As the web page is loaded, we just check if the page title matches or not.
-            result_PageTitle = final_page.getPageTitle();
+            var result = FinalPage.getPageTitle();
 
-            // Ensure that the page load is complete    
-            final_page.load_complete();
-
-            if (result_PageTitle == expected_PageTitle)
-            {
-                Console.WriteLine("SearchLT_Google Failed");
-            }
-            else
-            {
-                Console.WriteLine("SearchLT_Google Passed");
-            }
+            Assert.That(result, Is.EqualTo(expected_PageTitle), "SearchLT_Google Failed");
         }
 
         [OneTimeTearDown]
