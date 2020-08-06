@@ -1,38 +1,31 @@
 using System;
+using GoogleSearchPageObjects.Infrastructure;
 using OpenQA.Selenium;
 using NUnit.Framework;
-using OpenQA.Selenium.IE;
-using OpenQA.Selenium.Chrome;
 
 namespace GoogleSearchPageObjects
 {
+    public class GoogleTest : TestBase
+    {
+        String search_string = "asdf";
 
-        [TestFixture(typeof(ChromeDriver))]
-        [TestFixture(typeof(InternetExplorerDriver))]
-        public class TestWithMultipleBrowsers<TWebDriver> where TWebDriver : IWebDriver, new()
-        {
-            private IWebDriver driver;
-            String search_string = "asdf";
+        public FinalPage FinalPage;
+        public HomePage HomePage;
 
-            public FinalPage FinalPage;
-            public HomePage HomePage;
-
-            public SearchPage SearchPage;
-           // String web_page_title = "Google";
+        public SearchPage SearchPage;
 
         [SetUp]
-        public void CreateDriver()
+        public void Setup()
         {
-            driver = new TWebDriver();
-            FinalPage = new FinalPage(driver);
-            SearchPage = new SearchPage(driver);
-            HomePage = new HomePage(driver);
+            FinalPage = new FinalPage(Driver);
+            SearchPage = new SearchPage(Driver);
+            HomePage = new HomePage(Driver);
         }
 
-        [Test, Parallelizable]
+        [Test]
         public void SearchLT_Google()
         {
-            var expected_PageTitle = "asdf - Dictionary.com";
+            var expected_PageTitle = "asdf – Dictionary.com";
 
             HomePage.goToPage();
             HomePage.test_search(search_string);
@@ -48,7 +41,7 @@ namespace GoogleSearchPageObjects
         [OneTimeTearDown]
         public void CloseTest()
         {
-            driver.Close();
+            Driver.Close();
         }
     }
 }

@@ -1,15 +1,16 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
+using GoogleSearchPageObjects.Infrastructure;
 
 namespace GoogleSearchPageObjects
 {
-    public class FinalPage
+    public class FinalPage : PageBase
     {
         private IWebDriver driver;
         Int32 timeout = 10000; // in milliseconds
 
-        public FinalPage(IWebDriver driver)
+        public FinalPage(IWebDriver driver) : base(driver)
         {
             this.driver = driver;
         }

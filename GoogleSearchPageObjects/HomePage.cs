@@ -1,19 +1,18 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
+using GoogleSearchPageObjects.Infrastructure;
 
 namespace GoogleSearchPageObjects
 {
-    public class HomePage
+    public class HomePage : PageBase
     {
         String test_url = "https://www.google.com";
 
-        private IWebDriver driver;
         private WebDriverWait wait;
 
-        public HomePage(IWebDriver driver)
+        public HomePage(IWebDriver driver) : base(driver)
         {
-            this.driver = driver;
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         }
 
@@ -21,18 +20,13 @@ namespace GoogleSearchPageObjects
 
         public void goToPage()
         {
-            driver.Navigate().GoToUrl(test_url);
+            Driver.Navigate().GoToUrl(test_url);
         }
 
-        public String getPageTitle()
-        {
-            return driver.Title;
-        }
         public void test_search(string input_search)
         {
-            var search = driver.FindElement(elem_search_text);
+            var search = Element(elem_search_text);
             search.SendKeys(input_search);
-            //wait.Until(ExpectedConditions.ElementToBeClickable(elem_submit_button)).Submit();
             search.Submit();
         }
     }
